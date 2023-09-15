@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { AfterInsert, AfterUpdate, AfterRemove, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class User {
@@ -19,4 +19,19 @@ export class User {
 
   @Column({ default: true })
   isActive: boolean;
+
+  @AfterInsert()
+  logInsert() {
+    console.log('New user inserted !')
+  }
+  
+  @AfterUpdate()
+  logUpdate() {
+    console.log('Specific user updated !')
+  }
+  
+  @AfterRemove()
+  logRemove() {
+    console.log('Specific user deleted !')
+  }
 }
