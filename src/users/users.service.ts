@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { User } from './users.entity';
-import { Repository } from 'typeorm';
+import { Repository, Like } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 
 
@@ -27,7 +27,13 @@ export class UsersService {
     }
     //*** find By email */
     find(email: string) {
-        return this.repo.find({ where: { email } })
+
+        return !email
+
+            ? this.repo.find()
+
+            : this.repo.find({ where: { email: Like(`%${email}%`) } })
+
     }
 
     //*** Update users method */
@@ -38,15 +44,15 @@ export class UsersService {
 
         //?? Check to find the user
         if (!user) {
-            throw new Error("User not found !")
+            throw new NotFoundException("User not found !")
         }
 
         //?? Assign two objects
         Object.assign(user, attrs);
 
+
         //?? Save changes
         return this.repo.save(user);
-
 
     }
 
@@ -59,7 +65,7 @@ export class UsersService {
 
         //?? Check to find the user
         if (!user) {
-            throw new Error("User not found !")
+            throw new NotFoundException("User not found !")
         }
 
 
