@@ -14,6 +14,7 @@ import {
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dtos/update-user.dto';
+import { SerializeInterceptor } from 'src/interceptors/serialize.interceptor';
 
 @Controller('auth')
 export class UsersController {
@@ -23,16 +24,16 @@ export class UsersController {
   //*** Create user */
   @Post('/signup')
   signUp(@Body() body: CreateUserDto) {
-
     this.usersService.create(body)
-
   }
 
 
   //*** Find one user */
   @Get('/:id')
-  @UseInterceptors(ClassSerializerInterceptor)
+  @UseInterceptors(SerializeInterceptor)
   async findUser(@Param('id') id: string) {
+
+    console.log("Interceptor handler is running")
 
     //? Find user
     const user = await this.usersService.findOne(parseInt(id))
@@ -48,8 +49,10 @@ export class UsersController {
 
   //*** Find all users */
   @Get('/')
-  @UseInterceptors(ClassSerializerInterceptor)
+  @UseInterceptors(SerializeInterceptor)
   findAllUsers(@Query('email') email: string) {
+    console.log("Interceptor handler is running")
+
     return this.usersService.find(email);
   }
 
