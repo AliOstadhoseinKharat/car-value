@@ -8,6 +8,7 @@ import {
   Delete,
   Patch,
   NotFoundException,
+  Session
 } from '@nestjs/common';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UsersService } from './users.service';
@@ -23,18 +24,28 @@ export class UsersController {
   constructor(
     private usersService: UsersService,
     private authService: AuthService,
-  ) {}
+  ) { }
 
   //*** Create user */
   @Post('/signup')
-  signUp(@Body() body: CreateUserDto) {
-    return this.authService.signup(body);
+  async signUp(@Body() body: CreateUserDto, @Session() session: any) {
+    const user = await this.authService.signup(body);
+
+    //*** Session is set for signup users */
+    session.userId = user.id;
+
+    return user;
   }
 
   //*** Signin user */
   @Post('/signin')
-  signinUser(@Body() body: SigninUserDto) {
-    return this.authService.signin(body);
+  async signinUser(@Body() body: SigninUserDto, @Session() session: any) {
+    const user = await this.authService.signin(body);
+
+    //*** Session is set for logged in users */
+    session.userId = user.id;
+
+    return user;
   }
 
   //*** Find one user */
@@ -68,4 +79,5 @@ export class UsersController {
   removeUser(@Param('id') id: string) {
     return this.usersService.remove(parseInt(id));
   }
+
 }
