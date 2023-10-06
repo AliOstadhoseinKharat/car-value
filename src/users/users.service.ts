@@ -23,9 +23,14 @@ export class UsersService {
 
     //*** find one method */
     findOne(id: number) {
+
+        //*** check empty id for don't send first user  */
+        if (!id) {
+            return null;
+        }
         return this.repo.findOne({ where: { id } });
     }
-    
+
     //*** find By email */
     find(email: string) {
 

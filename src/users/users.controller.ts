@@ -8,7 +8,8 @@ import {
   Delete,
   Patch,
   NotFoundException,
-  Session
+  Session,
+  Request
 } from '@nestjs/common';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UsersService } from './users.service';
@@ -25,6 +26,28 @@ export class UsersController {
     private usersService: UsersService,
     private authService: AuthService,
   ) { }
+
+
+  //** Get current loggedin user */ 
+  @Get("/whoami")
+  async whoAmI(@Request() request: Request, @Session() session: any) {
+    //TODO here!
+    console.log(request)
+    const user = await this.usersService.findOne(session.userId);
+
+    if (!user) {
+      return "you aren't sign in"
+    }
+
+    return user;
+  }
+
+  //*** Signout user */
+  @Post("/signout")
+  signout(@Session() session: any) {
+    session.userId = null;
+    return "User signing out"
+  }
 
   //*** Create user */
   @Post('/signup')
