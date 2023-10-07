@@ -9,7 +9,6 @@ import {
   Patch,
   NotFoundException,
   Session,
-  Request
 } from '@nestjs/common';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UsersService } from './users.service';
@@ -18,6 +17,8 @@ import { serialize } from 'src/interceptors/serialize.interceptor';
 import { UserDto } from './dtos/user.dto';
 import { AuthService } from './auth.service';
 import { SigninUserDto } from './dtos/signin-user.dto';
+import { CurrentUserDecorator } from './decorators/current-user.decorator';
+import { User } from './users.entity';
 
 @Controller('auth')
 @serialize(UserDto)
@@ -25,28 +26,19 @@ export class UsersController {
   constructor(
     private usersService: UsersService,
     private authService: AuthService,
-  ) { }
+  ) {}
 
-
-  //** Get current loggedin user */ 
-  @Get("/whoami")
-  async whoAmI(@Request() request: Request, @Session() session: any) {
-    //TODO here!
-    console.log(request)
-    const user = await this.usersService.findOne(session.userId);
-
-    if (!user) {
-      return "you aren't sign in"
-    }
-
-    return user;
+  //** Get current loggedin user */
+  @Get('/whoami')
+  async whoAmI(@CurrentUserDecorator() currentUser: User) {
+    return currentUser;
   }
 
   //*** Signout user */
-  @Post("/signout")
+  @Post('/signout')
   signout(@Session() session: any) {
     session.userId = null;
-    return "User signing out"
+    return 'User signing out';
   }
 
   //*** Create user */
@@ -102,5 +94,4 @@ export class UsersController {
   removeUser(@Param('id') id: string) {
     return this.usersService.remove(parseInt(id));
   }
-
 }

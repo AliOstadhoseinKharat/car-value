@@ -12,6 +12,7 @@ import { map } from 'rxjs/operators';
 interface classContent {
   new (...args: any[]): {};
 }
+
 //**** decorator for SerializeInterceptor */
 export function serialize(dto: classContent) {
   return UseInterceptors(new SerializeInterceptor(dto));
