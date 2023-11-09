@@ -19,7 +19,7 @@ describe('Authentication System (e2e)', () => {
     let reqBody = {
       firstName: 'ali',
       lastName: 'ostad',
-      email: 'ali115@gmail.com',
+      email: 'ali22@gmail.com',
       password: '12345678',
       isActive: true,
     };
