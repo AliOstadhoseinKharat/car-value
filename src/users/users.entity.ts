@@ -1,3 +1,4 @@
+import { Report } from 'src/reports/Report.entity';
 import {
   AfterInsert,
   AfterUpdate,
@@ -5,8 +6,8 @@ import {
   Column,
   Entity,
   PrimaryGeneratedColumn,
+  OneToMany,
 } from 'typeorm';
-
 
 @Entity()
 export class User {
@@ -27,6 +28,10 @@ export class User {
 
   @Column({ default: true })
   isActive: boolean;
+
+  //*** One to many relationship with Reports */
+  @OneToMany(() => Report, (report) => report.user)
+  reports: Report[];
 
   @AfterInsert()
   logInsert() {
