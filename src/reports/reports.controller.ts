@@ -4,12 +4,15 @@ import { AuthGuard } from '../guards/auth.guard';
 import { ReportsService } from './reports.service';
 import { CurrentUserDecorator } from 'src/users/decorators/current-user.decorator';
 import { User } from 'src/users/users.entity';
+import { serialize } from 'src/interceptors/serialize.interceptor';
+import { ReportDto } from './dtos/report.dto';
 
 @Controller('reports')
 export class ReportsController {
   constructor(private reportsService: ReportsService) {}
 
   @Post()
+  @serialize(ReportDto)
   @UseGuards(AuthGuard)
   createReport(
     @Body() body: CreateReportDto,
