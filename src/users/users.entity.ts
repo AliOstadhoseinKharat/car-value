@@ -29,6 +29,9 @@ export class User {
   @Column({ default: true })
   isActive: boolean;
 
+  @Column({ default: true })
+  admin: boolean;
+
   //*** One to many relationship with Reports */
   @OneToMany(() => Report, (report) => report.user)
   reports: Report[];
