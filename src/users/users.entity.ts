@@ -29,7 +29,7 @@ export class User {
   @Column({ default: true })
   isActive: boolean;
 
-  @Column({ default: true })
+  @Column({ default: false })
   admin: boolean;
 
   //*** One to many relationship with Reports */
