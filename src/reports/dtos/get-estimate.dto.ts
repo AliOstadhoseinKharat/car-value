@@ -5,6 +5,7 @@ import {
   IsString,
   Max,
   Min,
+  ValidateIf,
 } from 'class-validator';
 
 import { Transform } from 'class-transformer';

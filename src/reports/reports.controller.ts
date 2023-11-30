@@ -26,7 +26,7 @@ export class ReportsController {
   //***‌ Get reports list with specific query params filters */
   @Get('/')
   getEstimate(@Query() query: GetEstimateDto) {
-    console.log(query);
+    return this.reportsService.GetEstimateReports(query);
   }
 
   //**** Create report with specific user */
